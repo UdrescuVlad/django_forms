@@ -13,6 +13,7 @@ def order(request):
         # create a new form but filled with the completed form
         filled_form = PizzaForm(request.POST)
         if filled_form.is_valid():
+            filled_form.save()
             note = 'Thanks for ordering! Your %s %s %s pizza is on its way!' %(filled_form.cleaned_data['size'],
             filled_form.cleaned_data['topping1'],
             filled_form.cleaned_data['topping2'],)
@@ -22,7 +23,7 @@ def order(request):
         form = PizzaForm()
         return render(request, 'pizza/order.html', {'pizzaform':form, 'multiple_form':multiple_form})
 
-def pizzas(self):
+def pizzas(request):
     number_of_pizzas = 2
     filled_multiple_pizza_form = MultiplePizzaForm(request.GET)
     if filled_multiple_pizza_form.is_valid():
@@ -38,3 +39,5 @@ def pizzas(self):
         else:
             note = 'Order was not created, please try again.'
         return render(request, 'pizza/pizzas.html', {'note':note, 'formset':formset})
+    else:
+        return render(request, 'pizza/pizzas.html', {'formset':formset})
